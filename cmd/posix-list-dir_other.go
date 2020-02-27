@@ -55,6 +55,7 @@ func readDirN(dirPath string, count int) (entries []string, err error) {
 		maxEntries = count
 	}
 
+	// Don't read the directory if no results are desired.
 	done := count == 0
 	remaining := count
 
