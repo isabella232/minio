@@ -63,10 +63,10 @@ func isSysErrTooManySymlinks(err error) bool {
 	return errors.Is(err, syscall.ELOOP)
 }
 
-// Check if the given error corresponds to ENOTEMPTY for unix
+// Check if the given error corresponds to ENOTEMPTY or EEXIST for unix
 // and ERROR_DIR_NOT_EMPTY for windows (directory not empty).
 func isSysErrNotEmpty(err error) bool {
-	if errors.Is(err, syscall.ENOTEMPTY) {
+	if errors.Is(err, syscall.ENOTEMPTY) || errors.Is(err, syscall.EEXIST) {
 		return true
 	}
 	var pathErr *os.PathError
