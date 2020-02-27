@@ -37,7 +37,6 @@ import (
 	"github.com/minio/minio/cmd/logger"
 	"github.com/minio/minio/pkg/disk"
 	"github.com/minio/sio"
-	"github.com/ncw/directio"
 	"go.uber.org/atomic"
 )
 
@@ -158,7 +157,7 @@ func newDiskCache(dir string, quotaPct, after, lowWatermark, highWatermark int) 
 		onlineMutex:   &sync.RWMutex{},
 		pool: sync.Pool{
 			New: func() interface{} {
-				b := directio.AlignedBlock(int(cacheBlkSize))
+				b := disk.AlignedBlock(int(cacheBlkSize))
 				return &b
 			},
 		},

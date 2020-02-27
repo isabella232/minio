@@ -18,8 +18,6 @@ package disk
 
 import (
 	"os"
-
-	"github.com/ncw/directio"
 )
 
 // Info stat fs struct is container which holds following values
@@ -73,7 +71,7 @@ func doPerfMeasure(fsPath string, size int64) (writeSpeed, readSpeed float64, er
 	}
 
 	// Fetch aligned buf for direct-io
-	buf := directio.AlignedBlock(speedTestBlockSize)
+	buf := AlignedBlock(speedTestBlockSize)
 
 	writeSpeed, err = speedTestWrite(w, buf, size)
 	w.Close()

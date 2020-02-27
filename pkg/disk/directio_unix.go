@@ -42,3 +42,8 @@ func DisableDirectIO(f *os.File) error {
 	_, err = unix.FcntlInt(fd, unix.F_SETFL, flag)
 	return err
 }
+
+// AlignedBlock - pass through to directio implementation.
+func AlignedBlock(BlockSize int) []byte {
+	return directio.AlignedBlock(BlockSize)
+}
