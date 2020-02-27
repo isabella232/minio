@@ -195,25 +195,30 @@ func getFreePort() string {
 
 // Tests for port availability logic written for server startup sequence.
 func TestCheckPortAvailability(t *testing.T) {
-	// Make a port is not available.
-	port := getFreePort()
-	listener, err := net.Listen("tcp", net.JoinHostPort("", port))
-	if err != nil {
-		t.Fatalf("Unable to listen on port %v", port)
-	}
-	defer listener.Close()
+	// Mark two ports as unavailable.
+	port0 := getFreePort()
+	port1 := getFreePort()
 
 	testCases := []struct {
-		host        string
-		port        string
-		expectedErr error
+		host         string
+		port         string
+		listenerPort string
+		expectedErr  error
 	}{
-		{"", port, fmt.Errorf("listen tcp :%v: bind: address already in use", port)},
-		{"127.0.0.1", port, fmt.Errorf("listen tcp 127.0.0.1:%v: bind: address already in use", port)},
-		{"", getFreePort(), nil},
+		{"", port0, port0, fmt.Errorf("listen tcp :%v: bind: address already in use", port0)},
+		{"127.0.0.1", port1, port1, fmt.Errorf("listen tcp 127.0.0.1:%v: bind: address already in use", port1)},
+		{"", getFreePort(), "", nil},
 	}
 
-	for _, testCase := range testCases {
+	for i, testCase := range testCases {
+		if testCase.listenerPort != "" {
+			listener, err := net.Listen("tcp", net.JoinHostPort(testCase.host, testCase.listenerPort))
+			if err != nil {
+				t.Fatalf("Unable to listen on port %v", testCase.listenerPort)
+			}
+			defer listener.Close()
+		}
+
 		// On MS Windows and Mac, skip checking error case due to https://github.com/golang/go/issues/7598
 		if (runtime.GOOS == globalWindowsOSName || runtime.GOOS == globalMacOSName) && testCase.expectedErr != nil {
 			continue
@@ -222,12 +227,12 @@ func TestCheckPortAvailability(t *testing.T) {
 		err := checkPortAvailability(testCase.host, testCase.port)
 		if testCase.expectedErr == nil {
 			if err != nil {
-				t.Fatalf("error: expected = <nil>, got = %v", err)
+				t.Fatalf("Test case %d: expected = <nil>, got = %v", i+1, err)
 			}
 		} else if err == nil {
-			t.Fatalf("error: expected = %v, got = <nil>", testCase.expectedErr)
+			t.Fatalf("%d error: expected = %v, got = <nil>", i+1, testCase.expectedErr)
 		} else if testCase.expectedErr.Error() != err.Error() {
-			t.Fatalf("error: expected = %v, got = %v", testCase.expectedErr, err)
+			t.Fatalf("%d error: expected = %v, got = %v", i+1, testCase.expectedErr, err)
 		}
 	}
 }
