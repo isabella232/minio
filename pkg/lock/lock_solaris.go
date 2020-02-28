@@ -21,14 +21,15 @@ package lock
 import (
 	"os"
 	"syscall"
+	"golang.org/x/sys/unix"
 )
 
 // lockedOpenFile is an internal function.
 func lockedOpenFile(path string, flag int, perm os.FileMode, rlockType int) (*LockedFile, error) {
-	var lockType int16
+	var lockType int
 	switch flag {
 	case syscall.O_RDONLY:
-		lockType = syscall.F_RDLCK
+		lockType = unix.LOCK_SH
 	case syscall.O_WRONLY:
 		fallthrough
 	case syscall.O_RDWR:
@@ -36,7 +37,7 @@ func lockedOpenFile(path string, flag int, perm os.FileMode, rlockType int) (*Lo
 	case syscall.O_WRONLY | syscall.O_CREAT:
 		fallthrough
 	case syscall.O_RDWR | syscall.O_CREAT:
-		lockType = syscall.F_WRLCK
+		lockType = unix.LOCK_EX
 	default:
 		return nil, &os.PathError{
 			Op:   "open",
@@ -45,24 +46,13 @@ func lockedOpenFile(path string, flag int, perm os.FileMode, rlockType int) (*Lo
 		}
 	}
 
-	var lock = syscall.Flock_t{
-		Start:  0,
-		Len:    0,
-		Pid:    0,
-		Type:   lockType,
-		Whence: 0,
-	}
-
 	f, err := os.OpenFile(path, flag, perm)
 	if err != nil {
 		return nil, err
 	}
 
-	if err = syscall.FcntlFlock(f.Fd(), rlockType, &lock); err != nil {
+	if err = unix.Flock(int(f.Fd()), lockType); err != nil {
 		f.Close()
-		if err == syscall.EAGAIN {
-			err = ErrAlreadyLocked
-		}
 		return nil, err
 	}
 
