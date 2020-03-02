@@ -1163,6 +1163,11 @@ func (s *posix) CreateFile(volume, path string, fileSize int64, r io.Reader) (er
 		return errMoreData
 	}
 
+	err = w.Sync()
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
