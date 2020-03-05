@@ -24,7 +24,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/Azure/azure-storage-blob-go/azblob"
+	"github.com/kodykantor/azure-storage-blob-go/azblob"
 	"google.golang.org/api/googleapi"
 
 	minio "github.com/minio/minio-go/v6"

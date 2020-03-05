@@ -26,7 +26,7 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/Azure/azure-storage-blob-go/azblob"
+	"github.com/kodykantor/azure-storage-blob-go/azblob"
 	minio "github.com/minio/minio/cmd"
 )
 

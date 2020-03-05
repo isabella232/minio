@@ -5,8 +5,7 @@ go 1.13
 require (
 	cloud.google.com/go v0.39.0
 	contrib.go.opencensus.io/exporter/ocagent v0.5.0 // indirect
-	github.com/Azure/azure-pipeline-go v0.2.1
-	github.com/Azure/azure-storage-blob-go v0.8.0
+	github.com/Azure/azure-pipeline-go v0.2.2
 	github.com/Azure/go-autorest v11.7.1+incompatible // indirect
 	github.com/Shopify/sarama v1.24.1
 	github.com/StackExchange/wmi v0.0.0-20190523213315-cbe66965904d // indirect
@@ -56,6 +55,7 @@ require (
 	github.com/klauspost/readahead v1.3.1
 	github.com/klauspost/reedsolomon v1.9.3
 	github.com/kurin/blazer v0.5.4-0.20200327014341-8f90a40f8af7
+	github.com/kodykantor/azure-storage-blob-go v0.8.1-0.20200305222319-10361e3015fb
 	github.com/lib/pq v1.1.1
 	github.com/mattn/go-colorable v0.1.1
 	github.com/mattn/go-ieproxy v0.0.0-20190805055040-f9202b1cfdeb // indirect
