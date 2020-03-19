@@ -144,6 +144,7 @@ func durationToNextHealRound(lastHeal time.Time) time.Duration {
 
 // Healing leader will take the charge of healing all erasure sets
 func execLeaderTasks(ctx context.Context, z *xlZones) {
+	return
 	// So that we don't heal immediately, but after one month.
 	lastScanTime := UTCNow()
 	// Get background heal sequence to send elements to heal

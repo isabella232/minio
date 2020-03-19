@@ -56,6 +56,7 @@ func initDataUsageStats(ctx context.Context, objAPI ObjectLayer) {
 }
 
 func runDataUsageInfo(ctx context.Context, objAPI ObjectLayer) {
+	return
 	for {
 		select {
 		case <-ctx.Done():

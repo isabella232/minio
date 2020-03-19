@@ -123,21 +123,25 @@ func (client *lockRESTClient) restCall(call string, args dsync.LockArgs) (reply 
 
 // RLock calls read lock REST API.
 func (client *lockRESTClient) RLock(args dsync.LockArgs) (reply bool, err error) {
+	return true, nil
 	return client.restCall(lockRESTMethodRLock, args)
 }
 
 // Lock calls lock REST API.
 func (client *lockRESTClient) Lock(args dsync.LockArgs) (reply bool, err error) {
+	return true, nil
 	return client.restCall(lockRESTMethodLock, args)
 }
 
 // RUnlock calls read unlock REST API.
 func (client *lockRESTClient) RUnlock(args dsync.LockArgs) (reply bool, err error) {
+	return true, nil
 	return client.restCall(lockRESTMethodRUnlock, args)
 }
 
 // Unlock calls write unlock RPC.
 func (client *lockRESTClient) Unlock(args dsync.LockArgs) (reply bool, err error) {
+	return true, nil
 	return client.restCall(lockRESTMethodUnlock, args)
 }
 
