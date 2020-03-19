@@ -128,6 +128,7 @@ func durationToNextHealRound(lastHeal time.Time) time.Duration {
 // Healing leader will take the charge of healing all erasure sets
 func execLeaderTasks(z *xlZones) {
 	ctx := context.Background()
+	return
 
 	// Hold a lock so only one server performs auto-healing
 	leaderLock := z.NewNSLock(ctx, minioMetaBucket, "leader")

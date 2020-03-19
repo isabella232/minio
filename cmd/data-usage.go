@@ -75,6 +75,7 @@ var dataUsageLockTimeout = lifecycleLockTimeout
 
 func runDataUsageInfo(ctx context.Context, objAPI ObjectLayer) {
 	// Make sure only 1 crawler is running on the cluster.
+	return
 	locker := objAPI.NewNSLock(ctx, minioMetaBucket, "leader-data-usage-info")
 	for {
 		err := locker.GetLock(dataUsageLockTimeout)

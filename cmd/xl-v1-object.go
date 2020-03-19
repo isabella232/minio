@@ -430,6 +430,21 @@ func rename(ctx context.Context, disks []StorageAPI, srcBucket, srcEntry, dstBuc
 
 	g := errgroup.WithNErrs(len(disks))
 
+	/* XXX kkantor kody
+	 * define the closure earlier for more perf?
+	renamefunc := func(index int) error {
+		if disks[index] == nil {
+			return errDiskNotFound
+		}
+		if err := disks[index].RenameFile(srcBucket, srcEntry, dstBucket, dstEntry); err != nil {
+			if !IsErrIgnored(err, ignoredErr...) {
+				return err
+			}
+		}
+		return nil
+	}
+	*/
+
 	// Rename file on all underlying storage disks.
 	for index := range disks {
 		index := index
@@ -620,6 +635,7 @@ func (xl xlObjects) putObject(ctx context.Context, bucket string, object string,
 		opts.UserDefined["content-type"] = mimedb.TypeByExtension(path.Ext(object))
 	}
 
+	/*
 	if xl.isObject(bucket, object) {
 		// Deny if WORM is enabled
 		if isWORMEnabled(bucket) {
@@ -642,6 +658,7 @@ func (xl xlObjects) putObject(ctx context.Context, bucket string, object string,
 			return ObjectInfo{}, toObjectErr(err, bucket, object)
 		}
 	}
+	*/
 
 	// Fill all the necessary metadata.
 	// Update `xl.json` content on each disks.

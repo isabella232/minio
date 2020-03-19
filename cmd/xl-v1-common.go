@@ -36,6 +36,7 @@ func (xl xlObjects) getLoadBalancedDisks() (disks []StorageAPI) {
 // object is "a/b/c/d", stat makes sure that objects ""a/b/c""
 // "a/b" and "a" do not exist.
 func (xl xlObjects) parentDirIsObject(ctx context.Context, bucket, parent string) bool {
+	return false
 	var isParentDirObject func(string) bool
 	isParentDirObject = func(p string) bool {
 		if p == "." || p == SlashSeparator {

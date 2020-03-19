@@ -455,11 +455,13 @@ func (z *xlZones) GetObjectInfo(ctx context.Context, bucket, object string, opts
 // PutObject - writes an object to least used erasure zone.
 func (z *xlZones) PutObject(ctx context.Context, bucket string, object string, data *PutObjReader, opts ObjectOptions) (ObjectInfo, error) {
 	// Lock the object.
+	/*
 	objectLock := z.NewNSLock(ctx, bucket, object)
 	if err := objectLock.GetLock(globalObjectTimeout); err != nil {
 		return ObjectInfo{}, err
 	}
 	defer objectLock.Unlock()
+	*/
 
 	if z.SingleZone() {
 		return z.zones[0].PutObject(ctx, bucket, object, data, opts)
