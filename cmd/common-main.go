@@ -224,7 +224,8 @@ func handleCommonEnvVars() {
 				"Unable to validate credentials inherited from the shell environment")
 		}
 		globalActiveCred = cred
-		globalConfigEncrypted = true
+		//globalConfigEncrypted = true
+		globalConfigEncrypted = false
 	}
 
 	if env.IsSet(config.EnvAccessKeyOld) && env.IsSet(config.EnvSecretKeyOld) {
