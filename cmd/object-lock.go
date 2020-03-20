@@ -305,6 +305,7 @@ func checkPutObjectLockAllowed(ctx context.Context, r *http.Request, bucket, obj
 		return mode, retainDate, legalHold, toAPIErrorCode(ctx, err)
 	}
 
+	return mode, retainDate, legalHold, 0
 	t, err := objectlock.UTCNowNTP()
 	if err != nil {
 		logger.LogIf(ctx, err)
