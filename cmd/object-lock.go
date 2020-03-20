@@ -170,6 +170,9 @@ func checkPutObjectLockAllowed(ctx context.Context, r *http.Request, bucket, obj
 	if err != nil {
 		return mode, retainDate, legalHold, toAPIErrorCode(ctx, err)
 	}
+
+	return mode, retainDate, legalHold, 0
+
 	if objInfo, err := getObjectInfoFn(ctx, bucket, object, opts); err == nil {
 		objExists = true
 		r := objectlock.GetObjectRetentionMeta(objInfo.UserDefined)
