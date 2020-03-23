@@ -643,6 +643,10 @@ func (xl xlObjects) putObject(ctx context.Context, bucket string, object string,
 	}
 
 	/*
+	  XXX kkantor kody, removing this makes directory moves not work (e.g.
+	    changing server configuration... Maybe we can optimize this by
+	    checking if the operation is against a directory vs an object.
+	*/
 	if xl.isObject(bucket, object) {
 		// Deny if WORM is enabled
 		if isWORMEnabled(bucket) {
@@ -665,7 +669,6 @@ func (xl xlObjects) putObject(ctx context.Context, bucket string, object string,
 			return ObjectInfo{}, toObjectErr(err, bucket, object)
 		}
 	}
-	*/
 
 	// Fill all the necessary metadata.
 	// Update `xl.json` content on each disks.
