@@ -49,7 +49,7 @@ func handleSignals() {
 		}
 
 		// Stop watching for any certificate changes.
-		globalTLSCerts.Stop()
+		//globalTLSCerts.Stop()
 
 		if httpServer := newHTTPServerFn(); httpServer != nil {
 			err = httpServer.Shutdown()

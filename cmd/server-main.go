@@ -32,7 +32,6 @@ import (
 	xhttp "github.com/minio/minio/cmd/http"
 	"github.com/minio/minio/cmd/logger"
 	"github.com/minio/minio/pkg/auth"
-	"github.com/minio/minio/pkg/certs"
 	"github.com/minio/minio/pkg/color"
 	"github.com/minio/minio/pkg/env"
 )
@@ -309,13 +308,15 @@ func serverMain(ctx *cli.Context) {
 	// Initialize all help
 	initHelp()
 
+	/*
 	// Check and load TLS certificates.
 	var err error
 	globalPublicCerts, globalTLSCerts, globalIsSSL, err = getTLSConfig()
 	logger.FatalIf(err, "Unable to load the TLS configuration")
+	*/
 
 	// Check and load Root CAs.
-	globalRootCAs, err = config.GetRootCAs(globalCertsCADir.Get())
+	_, err := config.GetRootCAs(globalCertsCADir.Get())
 	logger.FatalIf(err, "Failed to read root CAs (%v)", err)
 
 	// Is distributed setup, error out if no certificates are found for HTTPS endpoints.
@@ -356,12 +357,14 @@ func serverMain(ctx *cli.Context) {
 		logger.Fatal(config.ErrUnexpectedError(err), "Unable to configure one of server's RPC services")
 	}
 
+	/*
 	var getCert certs.GetCertificateFunc
 	if globalTLSCerts != nil {
 		getCert = globalTLSCerts.GetCertificate
 	}
+	*/
 
-	httpServer := xhttp.NewServer([]string{globalMinioAddr}, criticalErrorHandler{handler}, getCert)
+	httpServer := xhttp.NewServer([]string{globalMinioAddr}, criticalErrorHandler{handler})
 	httpServer.BaseContext = func(listener net.Listener) context.Context {
 		return GlobalContext
 	}
@@ -384,7 +387,7 @@ func serverMain(ctx *cli.Context) {
 	logger.SetDeploymentID(globalDeploymentID)
 	if err != nil {
 		// Stop watching for any certificate changes.
-		globalTLSCerts.Stop()
+		//globalTLSCerts.Stop()
 
 		globalHTTPServer.Shutdown()
 		logger.Fatal(err, "Unable to initialize backend")

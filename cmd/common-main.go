@@ -18,7 +18,6 @@ package cmd
 
 import (
 	"context"
-	"crypto/x509"
 	"encoding/gob"
 	"errors"
 	"net"
@@ -33,7 +32,6 @@ import (
 	"github.com/minio/minio/cmd/config"
 	"github.com/minio/minio/cmd/logger"
 	"github.com/minio/minio/pkg/auth"
-	"github.com/minio/minio/pkg/certs"
 	"github.com/minio/minio/pkg/env"
 )
 
@@ -253,6 +251,7 @@ func logStartupMessage(msg string) {
 	logger.StartupMessage(msg)
 }
 
+/*
 func getTLSConfig() (x509Certs []*x509.Certificate, c *certs.Certs, secureConn bool, err error) {
 	if !(isFile(getPublicCertFile()) && isFile(getPrivateKeyFile())) {
 		return nil, nil, false, nil
@@ -270,3 +269,4 @@ func getTLSConfig() (x509Certs []*x509.Certificate, c *certs.Certs, secureConn b
 	secureConn = true
 	return x509Certs, c, secureConn, nil
 }
+*/
