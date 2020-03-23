@@ -31,7 +31,6 @@ import (
 	"github.com/minio/minio/cmd/config"
 	xhttp "github.com/minio/minio/cmd/http"
 	"github.com/minio/minio/cmd/logger"
-	"github.com/minio/minio/pkg/certs"
 	"github.com/minio/minio/pkg/color"
 	"github.com/minio/minio/pkg/env"
 )
@@ -122,13 +121,15 @@ func StartGateway(ctx *cli.Context, gw Gateway) {
 	// To avoid this error situation we check for port availability.
 	logger.FatalIf(checkPortAvailability(globalMinioHost, globalMinioPort), "Unable to start the gateway")
 
+	/*
 	// Check and load TLS certificates.
 	var err error
 	globalPublicCerts, globalTLSCerts, globalIsSSL, err = getTLSConfig()
 	logger.FatalIf(err, "Invalid TLS certificate file")
+	*/
 
 	// Check and load Root CAs.
-	globalRootCAs, err = config.GetRootCAs(globalCertsCADir.Get())
+	_, err := config.GetRootCAs(globalCertsCADir.Get())
 	logger.FatalIf(err, "Failed to read root CAs (%v)", err)
 
 	// Handle gateway specific env
@@ -191,13 +192,15 @@ func StartGateway(ctx *cli.Context, gw Gateway) {
 	// Add API router.
 	registerAPIRouter(router, encryptionEnabled, allowSSEKMS)
 
+	/*
 	var getCert certs.GetCertificateFunc
 	if globalTLSCerts != nil {
 		getCert = globalTLSCerts.GetCertificate
 	}
+	*/
 
 	httpServer := xhttp.NewServer([]string{globalCLIContext.Addr},
-		criticalErrorHandler{registerHandlers(router, globalHandlers...)}, getCert)
+		criticalErrorHandler{registerHandlers(router, globalHandlers...)})
 	httpServer.BaseContext = func(listener net.Listener) context.Context {
 		return GlobalContext
 	}
@@ -214,7 +217,7 @@ func StartGateway(ctx *cli.Context, gw Gateway) {
 	newObject, err := gw.NewGatewayLayer(globalActiveCred)
 	if err != nil {
 		// Stop watching for any certificate changes.
-		globalTLSCerts.Stop()
+		//globalTLSCerts.Stop()
 
 		globalHTTPServer.Shutdown()
 		logger.FatalIf(err, "Unable to initialize gateway backend")
