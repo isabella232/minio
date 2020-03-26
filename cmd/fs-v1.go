@@ -502,7 +502,7 @@ func (fs *FSObjects) CopyObject(ctx context.Context, srcBucket, srcObject, dstBu
 		return fsMeta.ToObjectInfo(srcBucket, srcObject, fi), nil
 	}
 
-	if err := checkPutObjectArgs(ctx, dstBucket, dstObject, fs, srcInfo.PutObjReader.Size()); err != nil {
+	if err := checkPutObjectArgs(ctx, dstBucket, dstObject, fs, srcInfo.PutObjReader.Size(), true); err != nil {
 		return ObjectInfo{}, err
 	}
 
@@ -868,7 +868,7 @@ func (fs *FSObjects) parentDirIsObject(ctx context.Context, bucket, parent strin
 // Additionally writes `fs.json` which carries the necessary metadata
 // for future object operations.
 func (fs *FSObjects) PutObject(ctx context.Context, bucket string, object string, r *PutObjReader, opts ObjectOptions) (objInfo ObjectInfo, retErr error) {
-	if err := checkPutObjectArgs(ctx, bucket, object, fs, r.Size()); err != nil {
+	if err := checkPutObjectArgs(ctx, bucket, object, fs, r.Size(), true); err != nil {
 		return ObjectInfo{}, err
 	}
 	// Lock the object.

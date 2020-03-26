@@ -167,14 +167,16 @@ func checkObjectArgs(ctx context.Context, bucket, object string, obj ObjectLayer
 }
 
 // Checks for PutObject arguments validity, also validates if bucket exists.
-func checkPutObjectArgs(ctx context.Context, bucket, object string, obj ObjectLayer, size int64) error {
+func checkPutObjectArgs(ctx context.Context, bucket, object string, obj ObjectLayer, size int64, checkBucket bool) error {
 	// Verify if bucket exists before validating object name.
 	// This is done on purpose since the order of errors is
 	// important here bucket does not exist error should
 	// happen before we return an error for invalid object name.
 	// FIXME: should be moved to handler layer.
-	if err := checkBucketExist(ctx, bucket, obj); err != nil {
-		return err
+	if checkBucket {
+		if err := checkBucketExist(ctx, bucket, obj); err != nil {
+			return err
+		}
 	}
 
 	if err := checkObjectNameForLengthAndSlash(bucket, object); err != nil {

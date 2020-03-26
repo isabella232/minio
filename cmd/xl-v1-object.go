@@ -487,7 +487,7 @@ func rename(ctx context.Context, disks []StorageAPI, srcBucket, srcEntry, dstBuc
 // object operations.
 func (xl xlObjects) PutObject(ctx context.Context, bucket string, object string, data *PutObjReader, opts ObjectOptions) (objInfo ObjectInfo, err error) {
 	// Validate put object input args.
-	if err = checkPutObjectArgs(ctx, bucket, object, xl, data.Size()); err != nil {
+	if err = checkPutObjectArgs(ctx, bucket, object, xl, data.Size(), false); err != nil {
 		return ObjectInfo{}, err
 	}
 
@@ -646,8 +646,11 @@ func (xl xlObjects) putObject(ctx context.Context, bucket string, object string,
 	  XXX kkantor kody, removing this makes directory moves not work (e.g.
 	    changing server configuration... Maybe we can optimize this by
 	    checking if the operation is against a directory vs an object.
+
+	    For now we only allow these types of operations for configuration
+	    objects (e.g. in the .minio.sys directory)
 	*/
-	if xl.isObject(bucket, object) {
+	if bucket == ".minio.sys" && xl.isObject(bucket, object) {
 		// Deny if WORM is enabled
 		if isWORMEnabled(bucket) {
 			if _, err := xl.getObjectInfo(ctx, bucket, object, ObjectOptions{}); err == nil {
