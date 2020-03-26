@@ -46,7 +46,7 @@ const (
 
 // DefaultBitrotAlgorithm is the default algorithm used for bitrot protection.
 const (
-	DefaultBitrotAlgorithm = HighwayHash256S
+	DefaultBitrotAlgorithm = HighwayHash256
 )
 
 var bitrotAlgorithms = map[BitrotAlgorithm]string{
