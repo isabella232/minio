@@ -487,7 +487,11 @@ func rename(ctx context.Context, disks []StorageAPI, srcBucket, srcEntry, dstBuc
 // object operations.
 func (xl xlObjects) PutObject(ctx context.Context, bucket string, object string, data *PutObjReader, opts ObjectOptions) (objInfo ObjectInfo, err error) {
 	// Validate put object input args.
-	if err = checkPutObjectArgs(ctx, bucket, object, xl, data.Size(), false); err != nil {
+	check_bucket := false
+	if bucket == ".minio.sys" {
+		check_bucket = true
+	}
+	if err = checkPutObjectArgs(ctx, bucket, object, xl, data.Size(), check_bucket); err != nil {
 		return ObjectInfo{}, err
 	}
 
@@ -521,7 +525,9 @@ func (xl xlObjects) putObject(ctx context.Context, bucket string, object string,
 	// Delete temporary object in the event of failure.
 	// If PutObject succeeded there would be no temporary
 	// object to delete.
+	/*
 	defer xl.deleteObject(ctx, minioMetaTmpBucket, tempObj, writeQuorum, false)
+	*/
 
 	// This is a special case with size as '0' and object ends with
 	// a slash separator, we treat it like a valid operation and
