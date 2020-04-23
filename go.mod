@@ -54,8 +54,8 @@ require (
 	github.com/klauspost/pgzip v1.2.1
 	github.com/klauspost/readahead v1.3.1
 	github.com/klauspost/reedsolomon v1.9.3
-	github.com/kurin/blazer v0.5.4-0.20200327014341-8f90a40f8af7
 	github.com/kodykantor/azure-storage-blob-go v0.8.1-0.20200305222319-10361e3015fb
+	github.com/kurin/blazer v0.5.4-0.20200327014341-8f90a40f8af7
 	github.com/lib/pq v1.1.1
 	github.com/mattn/go-colorable v0.1.1
 	github.com/mattn/go-ieproxy v0.0.0-20190805055040-f9202b1cfdeb // indirect
@@ -110,7 +110,7 @@ require (
 	go.uber.org/atomic v1.3.2
 	go.uber.org/multierr v1.1.0 // indirect
 	go.uber.org/zap v1.10.0 // indirect
-	golang.org/x/crypto v0.0.0-20191117063200-497ca9f6d64f
+	golang.org/x/crypto v0.0.0-20191206172530-e9b2fee46413
 	golang.org/x/net v0.0.0-20200324143707-d3edc9973b7e
 	golang.org/x/oauth2 v0.0.0-20190402181905-9f3314589c9a // indirect
 	golang.org/x/sys v0.0.0-20200323222414-85ca7c5b95cd

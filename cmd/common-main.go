@@ -17,7 +17,6 @@
 package cmd
 
 import (
-	"crypto/x509"
 	"encoding/gob"
 	"errors"
 	"net"
